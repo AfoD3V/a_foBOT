@@ -3,11 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# file
+logs.txt
+config.ini
+
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
+logs/
 build/
 develop-eggs/
 dist/

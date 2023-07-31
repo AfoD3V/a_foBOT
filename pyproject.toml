@@ -10,6 +10,9 @@ packages = [{include = "a_fobot"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 discord = "^2.3.1"
+configparser = "^6.0.0"
+black = "^23.7.0"
+pylint = "^2.17.5"
 
 
 [build-system]

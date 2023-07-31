@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "a-fobot"
+version = "0.1.0"
+description = "Discord bot created with a purpose of various use cases."
+authors = ["AfoD3V"]
+license = "GNU GENERAL PUBLIC LICENSE"
+readme = "README.md"
+packages = [{include = "a_fobot"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+discord = "^2.3.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

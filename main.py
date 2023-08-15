@@ -82,11 +82,11 @@ class MyClient(discord.Client):
         try:
             if str(message.channel) in CHANNELS and str(message.author) in USERS:
                 # Secret Menu Call
-                if message.content.count(CONFIG["secret_phrase"]["key"]) > 0:
+                msg = message.content.replace("|", "")
+                print(msg)
+                if msg.count(CONFIG["secret_phrase"]["key"]) > 0:
                     # 0 - Secret Number / 1 - ID of option / 2 - Option Mode [0 - ON / 1 - Off]
-                    splitted_message = [
-                        int(element) for element in message.content.split()
-                    ]
+                    splitted_message = [int(element) for element in msg.split()]
                     if len(splitted_message) == 3:
                         await message.channel.purge(limit=1)
                         SETTINGS_MENU[splitted_message[1] - 1] = bool(

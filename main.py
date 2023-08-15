@@ -3,7 +3,7 @@ import discord
 from configparser import ConfigParser
 import os
 from discord.flags import Intents
-from datetime import datetime
+from datetime import datetime, date
 
 # Config File
 CONFIG = ConfigParser()
@@ -15,20 +15,26 @@ INTENTS.message_content = True
 
 # Whitelist for Channels & Users
 CHANNELS = ["test"]
-USERS = ["_afo_"]
+USERS = ["_afo_", "a_foBOT#6965"]
 
 # Logs settings
 LOGS_FOLDER = "logs"
 ERROR_LOGS = "error_logs.txt"
 USER_COMMAND_LOGS = "user_command_logs.txt"
+D_MESSAGES_LOGS = "deleted_messages_logs.txt"
 
 # Time
 time_now = datetime.now()
 CURRENT_TIME = time_now.strftime("%H:%M:%S")
+date_today = date.today()
+TODAY_DATE = date_today.strftime("%d-%m-%y")
 
 # Bad Words Filter
 BAD_WORDS = ["slut", "whore", "cunt"]
-FILTERING_STATUS = True
+
+# Secret Menu
+# 0 - Filtering Status
+SETTINGS_MENU = [False]
 
 
 # Client Class
@@ -43,14 +49,42 @@ class MyClient(discord.Client):
         print(f"Message from {message.author}: {message.content}")
 
         # Message filter
-        if FILTERING_STATUS:
+        if SETTINGS_MENU[0]:
             for word in BAD_WORDS:
                 if message.content.lower().count(word) > 0:
                     print("Offensive word - message deleted")
+                    os.makedirs(LOGS_FOLDER, exist_ok=True)
+                    log_file_path = os.path.join(LOGS_FOLDER, D_MESSAGES_LOGS)
+                    with open(log_file_path, "a") as f:
+                        f.write(
+                            f"{TODAY_DATE} {CURRENT_TIME} | "
+                            + f"User: {message.author}\nMessage: {message.content}\n"
+                            + "-" * 20
+                            + "\n"
+                        )
+                    print(f"User: {message.author} Message: {message.content}")
                     await message.channel.purge(limit=1)
+                    break
 
         # Message commands
         if str(message.channel) in CHANNELS and str(message.author) in USERS:
+            # Secret Menu Call
+            if message.content.count(CONFIG["secret_phrase"]["key"]) > 0:
+                # 0 - Secret Number / 1 - ID of option / 2 - Option Mode [0 - ON / 1 - Off]
+                splitted_message = [int(element) for element in message.content.split()]
+                if len(splitted_message) == 3:
+                    await message.channel.purge(limit=1)
+                    SETTINGS_MENU[splitted_message[1] - 1] = bool(splitted_message[2])
+                    await message.channel.purge(limit=1)
+                    await message.channel.send("Settings updated...")
+                    await message.channel.send(
+                        f"Secret Menu:\n1. msg_filtering: {int(SETTINGS_MENU[0])}"
+                    )
+                else:
+                    await message.channel.purge(limit=1)
+                    await message.channel.send(
+                        f"Secret Menu:\n1. msg_filtering: {int(SETTINGS_MENU[0])}"
+                    )
             # Test message
             if message.content == "!test":
                 await message.channel.send("test")
@@ -86,4 +120,4 @@ if __name__ == "__main__":
         # Append the error message to the 'logs.txt' file
         log_file_path = os.path.join(LOGS_FOLDER, ERROR_LOGS)
         with open(log_file_path, "a") as f:
-            f.write(f"{CURRENT_TIME} | " + str(error_message) + "\n")
+            f.write(f"{TODAY_DATE} {CURRENT_TIME} | " + str(error_message) + "\n")

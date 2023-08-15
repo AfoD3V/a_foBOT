@@ -89,27 +89,48 @@ class MyClient(discord.Client):
                     splitted_message = [int(element) for element in msg.split()]
                     if len(splitted_message) == 3:
                         await message.channel.purge(limit=1)
-                        SETTINGS_MENU[splitted_message[1] - 1] = bool(
-                            splitted_message[2]
-                        )
+                        SETTINGS_MENU[splitted_message[1]] = bool(splitted_message[2])
                         await message.channel.purge(limit=1)
                         await message.channel.send("Settings updated...")
-                        await message.channel.send(
-                            f"Secret Menu:\n1. msg_filtering: {int(SETTINGS_MENU[0])}"
+                        embeded_element = discord.Embed(
+                            title="Settings", description="Bot current settings"
                         )
+                        embeded_element.add_field(
+                            name="Message Filter", value=str(SETTINGS_MENU[0])
+                        )
+                        await message.channel.send(content=None, embed=embeded_element)
                     else:
                         await message.channel.purge(limit=1)
-                        await message.channel.send(
-                            f"Secret Menu:\n1. msg_filtering: {int(SETTINGS_MENU[0])}"
+                        embeded_element = discord.Embed(
+                            title="Settings", description="Bot current settings"
                         )
-                # Test message
-                if message.content == "!test":
-                    await message.channel.send("test")
+                        embeded_element.add_field(
+                            name="[0] Message Filter", value=str(SETTINGS_MENU[0])
+                        )
+                        await message.channel.send(content=None, embed=embeded_element)
+
+                # Help Message [embedded]
+                if message.content == "!help":
+                    embeded_element = discord.Embed(
+                        title="Help on a_foBOT",
+                        description="Available commands",
+                    )
+                    embeded_element.add_field(
+                        name="!help",
+                        value="Displaying commands description",
+                    )
+                    embeded_element.add_field(
+                        name="!user_count",
+                        value="Displaying total number of users",
+                    )
+                    await message.channel.send(content=None, embed=embeded_element)
+
                 # Counting on server users
                 if message.content == "!user_count":
                     # Getting server id
                     id_ = client.get_guild(int(CONFIG["id"]["server_7sins"]))
                     await message.channel.send(f"Number of users: {id_._member_count}")
+
             # Saving logs if unauthorized user is going to push command
             else:
                 os.makedirs(LOGS_FOLDER, exist_ok=True)

@@ -2,7 +2,7 @@ from typing import Any
 import discord
 from configparser import ConfigParser
 import os
-from discord.flags import Intents
+
 from datetime import datetime, date
 
 # Config File
@@ -15,7 +15,7 @@ INTENTS.message_content = True
 
 # Whitelist for Channels & Users
 CHANNELS = ["test"]
-USERS = ["_afo_", "a_foBOT#6965"]
+USERS = ["_afo_", "a_foBOT#6965", "test_a_foBOT#8471"]
 
 # Logs settings
 LOGS_FOLDER = "logs"
@@ -96,7 +96,7 @@ class MyClient(discord.Client):
                             title="Settings", description="Bot current settings"
                         )
                         embeded_element.add_field(
-                            name="Message Filter", value=str(SETTINGS_MENU[0])
+                            name="[0] Message Filter", value=str(SETTINGS_MENU[0])
                         )
                         await message.channel.send(content=None, embed=embeded_element)
                     else:

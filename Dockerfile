@@ -6,7 +6,6 @@ WORKDIR /home/user
 
 COPY src .
 
-RUN apk add --no-cache gcc libffi-dev musl-dev postgresql-dev
 RUN pip install "poetry==$POETRY_VERSION"
 RUN python -m venv /venv
 

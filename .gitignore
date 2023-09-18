@@ -6,6 +6,9 @@ __pycache__/
 # file
 logs.txt
 config.ini
+TODO.md
+my_notes.md
+requirements.txt
 
 # C extensions
 *.so

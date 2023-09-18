@@ -1,13 +1,3 @@
-FROM alpine:latest
-
-RUN useradd -ms /bin/bash user
-USER user
-WORKDIR /home/user
-
-COPY src .
-
-FROM python:3.10
-
 RUN useradd -ms /bin/bash user
 USER user
 WORKDIR /home/user
@@ -28,6 +18,4 @@ RUN poetry build && /venv/bin/pip install dist/*.whl
 EXPOSE 10000
 
 ENTRYPOINT ["python", "main.py"]
-EXPOSE 10000
 
-ENTRYPOINT ["python", "main.py"]

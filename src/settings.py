@@ -30,9 +30,11 @@ D_MESSAGES_LOGS = "deleted_messages_logs.txt"
 CHANNELS = ["test"]
 USERS = ["_afo_", "a_foBOT#6965", "test_a_foBOT#8471"]
 
+
 """Config File"""
 CONFIG = ConfigParser()
 CONFIG.read("config.ini")
+
 
 """Setting for data input (which kind of data bot can receive)"""
 INTENTS = discord.Intents.default()

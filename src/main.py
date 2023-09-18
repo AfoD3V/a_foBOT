@@ -1,45 +1,17 @@
 from typing import Any
 import discord
-from configparser import ConfigParser
 import os
 
-from datetime import datetime, date
-
-# Config File
-CONFIG = ConfigParser()
-CONFIG.read("config.ini")
-
-# Setting for data input (which kind of data bot can receive)
-INTENTS = discord.Intents.default()
-INTENTS.message_content = True
-
-# Whitelist for Channels & Users
-CHANNELS = ["test"]
-USERS = ["_afo_", "a_foBOT#6965", "test_a_foBOT#8471"]
-
-# Logs settings
-LOGS_FOLDER = "logs"
-ERROR_LOGS = "error_logs.txt"
-USER_COMMAND_LOGS = "user_command_logs.txt"
-D_MESSAGES_LOGS = "deleted_messages_logs.txt"
-
-# Time
-time_now = datetime.now()
-CURRENT_TIME = time_now.strftime("%H:%M:%S")
-date_today = date.today()
-TODAY_DATE = date_today.strftime("%d-%m-%y")
-
-# Bad Words Filter
-PROHIBITED_WORDS = ["test word"]
-
-# Secret Menu
-SETTINGS_MENU = [
-    False,  # 0 - Filtering
-]
+from discord.flags import Intents
+from settings import *
 
 
 # Client Class
 class MyClient(discord.Client):
+    def __init__(self, *, intents: Intents, **options: Any) -> None:
+        super().__init__(intents=intents, **options)
+        self.SETTINGS_MENU = SETTINGS_MENU
+
     # On ready welcome message
     async def on_ready(self):
         print(f"Logged on as {self.user}")
@@ -51,7 +23,7 @@ class MyClient(discord.Client):
 
         # Message filter
         try:
-            if SETTINGS_MENU[0]:
+            if self.SETTINGS_MENU[0]:
                 for word in PROHIBITED_WORDS:
                     if message.content.lower().count(word) > 0:
                         print("Offensive word - message deleted")
@@ -89,14 +61,16 @@ class MyClient(discord.Client):
                     splitted_message = [int(element) for element in msg.split()]
                     if len(splitted_message) == 3:
                         await message.channel.purge(limit=1)
-                        SETTINGS_MENU[splitted_message[1]] = bool(splitted_message[2])
+                        self.SETTINGS_MENU[splitted_message[1]] = bool(
+                            splitted_message[2]
+                        )
                         await message.channel.purge(limit=1)
                         await message.channel.send("Settings updated...")
                         embeded_element = discord.Embed(
                             title="Settings", description="Bot current settings"
                         )
                         embeded_element.add_field(
-                            name="[0] Message Filter", value=str(SETTINGS_MENU[0])
+                            name="[0] Message Filter", value=str(self.SETTINGS_MENU[0])
                         )
                         await message.channel.send(content=None, embed=embeded_element)
                     else:
@@ -105,7 +79,7 @@ class MyClient(discord.Client):
                             title="Settings", description="Bot current settings"
                         )
                         embeded_element.add_field(
-                            name="[0] Message Filter", value=str(SETTINGS_MENU[0])
+                            name="[0] Message Filter", value=str(self.SETTINGS_MENU[0])
                         )
                         await message.channel.send(content=None, embed=embeded_element)
 

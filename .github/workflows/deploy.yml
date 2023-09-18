@@ -70,8 +70,7 @@ jobs:
       - name: Install poetry dependencies
         run: poetry install
       - name: Test with pytest
-        run: |
-          pytest -v
+        run: poetry run pytest -v 
       - name: Initialize config.ini
         run: python initialize_config.py
       - name: Use Node 16

@@ -29,9 +29,19 @@ D_MESSAGES_LOGS = "deleted_messages_logs.txt"
 """Whitelist for Channels & Users"""
 CHANNELS = ["test"]
 USERS = ["_afo_", "a_foBOT#6965", "test_a_foBOT#8471"]
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> main
 """Config File"""
 CONFIG = ConfigParser()
 CONFIG.read("config.ini")
+
+<<<<<<< HEAD
+
+=======
+>>>>>>> main
 """Setting for data input (which kind of data bot can receive)"""
 INTENTS = discord.Intents.default()
 INTENTS.message_content = True

@@ -1,11 +1,10 @@
 [tool.poetry]
-name = "a-fobot"
+name = "a-foBOT"
 version = "0.1.0"
 description = "Discord bot created with a purpose of various use cases."
 authors = ["AfoD3V"]
 license = "GNU GENERAL PUBLIC LICENSE"
 readme = "README.md"
-packages = [{include = "a_fobot"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"
@@ -13,7 +12,11 @@ discord = "^2.3.1"
 configparser = "^6.0.0"
 black = "^23.7.0"
 pylint = "^2.17.5"
+pytest = "^7.4.2"
 
+[virtualenvs]
+create = true
+in-project = true
 
 [build-system]
 requires = ["poetry-core"]

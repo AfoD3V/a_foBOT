@@ -1,4 +1,4 @@
-name: deploy
+name: Deploy
 
 on:
   pull_request:
@@ -36,24 +36,44 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
       - uses: actions/checkout@v3
+      - name: Install poetry
+        run: pipx install poetry
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'poetry'
+      - name: Install poetry dependencies
+        run: poetry install
       - name: Get timestamp
         id: timestamp
         run: echo "::set-output name=timestamp::$(date +%s)"
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag afod3v/calendar-app:${{ steps.timestamp.outputs.timestamp }}
+        run: docker build . --file Dockerfile --tag afod3v/afobot:${{ steps.timestamp.outputs.timestamp }}
       - name: Login into DockerHub
         run: echo "${{secrets.DOCKER_PASSWORD}}" | docker login -u ${{secrets.DOCKER_USER}} --password-stdin
       - name: Push into DockerHub
-        run: docker push afod3v/calendar-app:${{ steps.timestamp.outputs.timestamp }}
+        run: docker push afod3v/afobot:${{ steps.timestamp.outputs.timestamp }}
+      
 
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.10"
+      - name: Install dependencies with Poetry
+        run: |
+          poetry install
+      - name: Test with pytest
+        run: |
+          pytest -v
+      - name: Initialize config.ini
+        run: python initialize_config.py
       - name: Use Node 16
         uses: actions/setup-node@v1
         with:

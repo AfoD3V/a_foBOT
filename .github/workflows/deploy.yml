@@ -54,7 +54,7 @@ jobs:
       - name: Test with pytest
         run: poetry run pytest -v 
       - name: Initialize config.ini
-        run: python config_init.py
+        run: python ./src/config_init.py 
       - name: Use Node 16
         uses: actions/setup-node@v1
         with:

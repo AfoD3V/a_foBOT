@@ -6,7 +6,7 @@ WORKDIR /home/user
 
 COPY src .
 
-RUN pip install poetry
+RUN pipx install poetry
 RUN poetry install
 
 EXPOSE 10000

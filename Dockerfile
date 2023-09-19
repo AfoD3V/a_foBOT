@@ -4,7 +4,7 @@ RUN useradd -ms /bin/bash user
 USER user
 WORKDIR /home/user
 
-COPY .
+COPY /homr/user/a_foBOT/src .
 
 RUN pip install "poetry==$POETRY_VERSION"
 RUN python -m venv /venv

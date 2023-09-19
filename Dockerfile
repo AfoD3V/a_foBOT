@@ -1,20 +1,10 @@
-FROM alpine:latest
+FROM python:3.8
 
-RUN useradd -ms /bin/bash user
+RUN useradd -ms /bin/bash user  
 USER user
-WORKDIR /home/user
 
-COPY /homr/user/a_foBOT/src .
-
-RUN pip install "poetry==$POETRY_VERSION"
-RUN python -m venv /venv
-
-COPY pyproject.toml poetry.lock ./
-RUN poetry export -f requirements.txt | /venv/bin/pip install -r /dev/stdin
-
-COPY . .
-RUN poetry build && /venv/bin/pip install dist/*.whl
-
+RUN poetry export -f requirements.txt --output requirements.txt
+COPY requirements.txt .
 
 EXPOSE 10000
 

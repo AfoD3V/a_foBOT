@@ -81,7 +81,7 @@ class MyClient(discord.Client):
 
         Input:
          - message: actual message received from the discord server side"""
-        if msg.count(CONFIG["secret_phrase"]["key"]) > 0:
+        if msg.count(os.environ["SECRET_KEY"]) > 0:
             # 0 - Secret Number / 1 - ID of option / 2 - Option Mode [0 - ON / 1 - Off]
             splitted_message = [int(element) for element in msg.split()]
             if len(splitted_message) == 3:
@@ -182,7 +182,7 @@ if __name__ == "__main__":
 
     # Run Client
     try:
-        client.run(CONFIG["discord"]["token"])
+        client.run(os.environ["DISCORD_TOKEN"])
     # If anny error occure - save logs
     except Exception as error_message:
         # Create folder if not exist

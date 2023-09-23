@@ -34,8 +34,8 @@ jobs:
         id: timestamp
         run: export TIME_STAMP=$(date +%s)
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag afod3v/afobot:${{ TIME_STAMP }}
+        run: docker build . --file Dockerfile --tag afod3v/afobot:$TIME_STAMP
       - name: Login into DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
       - name: Push into DockerHub
-        run: docker push afod3v/afobot:${{ TIME_STAMP }}
+        run: docker push afod3v/afobot:$TIME_STAMP

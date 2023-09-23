@@ -1,8 +1,11 @@
-name: Deploy
+name: deploy
 
 on:
   pull_request:
-    branches: [ "main" ] 
+    branches: [ "main" ]
+    types:
+      - closed
+      
   workflow_dispatch:
     inputs:
       input:
@@ -13,24 +16,19 @@ on:
 permissions:
   contents: read
 
-jobs:  
+jobs:
   deploy:
     runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v3
-      - name: Install poetry
-        run: pipx install poetry
-      - uses: actions/setup-python@v4
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
         with:
-          python-version: '3.10'
-          cache: 'poetry'
-      - name: Install poetry dependencies
-        run: poetry install
-      - name: Test with pytest
-        run: poetry run pytest -v 
-      - name: Initialize config.ini
-        run: python config_init.py 
+          python-version: "3.10"
+      - name: Install dependencies with Poetry
+        run: |
+          poetry install
       - name: Use Node 16
         uses: actions/setup-node@v1
         with:

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       input:
-        description: "Test"
+        description: "Dispatch"
         required: false
         default: "World"
         
@@ -31,8 +31,8 @@ jobs:
       - name: Create requirements file
         run: poetry export -f requirements.txt -o requirements.txt --without-hashes && cat requirements.txt
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag afod3v/test
+        run: docker build . --file Dockerfile --tag afod3v/afobot
       - name: Login into DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u ${{ secrets.DOCKER_USER }} --password-stdin
       - name: Push into DockerHub
-        run: docker push afod3v/test
+        run: docker push afod3v/afobot

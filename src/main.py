@@ -53,28 +53,13 @@ class MyClient(discord.Client):
                 for word in PROHIBITED_WORDS:
                     if message.content.lower().count(word) > 0:
                         print("Offensive word - message deleted")
-                        os.makedirs(LOGS_FOLDER, exist_ok=True)
-                        log_file_path = os.path.join(LOGS_FOLDER, D_MESSAGES_LOGS)
-                        with open(log_file_path, "a") as f:
-                            f.write(
-                                f"{TODAY_DATE} {CURRENT_TIME} | "
-                                + f"User: {message.author}\nMessage: {message.content}\n"
-                                + "-" * 20
-                                + "\n"
-                            )
-
                         print(f"User: {message.author} Message: {message.content}")
                         await message.channel.purge(limit=1)
                         break
         except Exception as error_message:
             # Send warning
             await message.channel.send("Something went wrong...")
-            # Create folder if not exist
-            os.makedirs(LOGS_FOLDER, exist_ok=True)
-            # Append the error message to the 'logs.txt' file
-            log_file_path = os.path.join(LOGS_FOLDER, ERROR_LOGS)
-            with open(log_file_path, "a") as f:
-                f.write(f"{TODAY_DATE} {CURRENT_TIME} | " + str(error_message) + "\n")
+            print(error_message)
 
     async def secret_menu_command(self, message: str, msg: str) -> None:
         """Call secret menu if message is equal to -> secret_key or ||secret_key||
@@ -135,8 +120,6 @@ class MyClient(discord.Client):
         Input:
          - message: actual message received from the discord server side
         """
-        # System console print
-        print(f"Message from {message.author}: {message.content}")
 
         # Message Filtering
         await self.message_filter(message)
@@ -153,14 +136,6 @@ class MyClient(discord.Client):
 
             # Saving logs if unauthorized user is going to push command
             else:
-                os.makedirs(LOGS_FOLDER, exist_ok=True)
-                log_file_path = os.path.join(LOGS_FOLDER, USER_COMMAND_LOGS)
-                with open(log_file_path, "a") as f:
-                    f.write(
-                        f"{CURRENT_TIME} | "
-                        + f"User: {message.author} tried to push command: {message.content}"
-                        + "\n"
-                    )
                 print(
                     f"User: {message.author} tried to push command: {message.content}"
                 )
@@ -168,12 +143,7 @@ class MyClient(discord.Client):
         except Exception as error_message:
             # Send warning
             await message.channel.send("Something went wrong...")
-            # Create folder if not exist
-            os.makedirs(LOGS_FOLDER, exist_ok=True)
-            # Append the error message to the 'logs.txt' file
-            log_file_path = os.path.join(LOGS_FOLDER, ERROR_LOGS)
-            with open(log_file_path, "a") as f:
-                f.write(f"{TODAY_DATE} {CURRENT_TIME} | " + str(error_message) + "\n")
+            print(error_message)
 
 
 if __name__ == "__main__":
@@ -185,9 +155,4 @@ if __name__ == "__main__":
         client.run(os.environ["DISCORD_TOKEN"])
     # If anny error occure - save logs
     except Exception as error_message:
-        # Create folder if not exist
-        os.makedirs(LOGS_FOLDER, exist_ok=True)
-        # Append the error message to the 'logs.txt' file
-        log_file_path = os.path.join(LOGS_FOLDER, ERROR_LOGS)
-        with open(log_file_path, "a") as f:
-            f.write(f"{TODAY_DATE} {CURRENT_TIME} | " + str(error_message) + "\n")
+        print(error_message)
